@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const tenantDBService = require('../database/TenantDBService');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -8,6 +9,11 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function (req, res) {
     console.log('Post tenant request :'+ JSON.stringify(req.body));
+    let tenantObject = req.body;
+    console.log('Tenant Router - Before Calling Tenant DB Service - save Tenant');
+    tenantDBService.saveTenant(tenantObject);
+    console.log('Tenant Router - After Calling Tenant DB Service - save Tenant');
+    
     let {firstName:firstName, lastName:lastName} = req.body;
     res.send({"firstName": firstName, "lastName":lastName, "tenantId":123});
   })
