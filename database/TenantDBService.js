@@ -23,3 +23,19 @@ exports.saveTenant = (tenantObject) => {
     });
 
 }
+
+exports.getTenant = (responseCallback) => {
+
+    console.log('TenantDBService - getTenant');
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("tenantdb");
+
+    //dbo.collection(<TABLE_NAME>).insertOne ( Object )
+    dbo.collection("tenant").find({}).toArray(function(err, result) {
+        if (err) throw err;
+        responseCallback.send(result);
+        db.close();
+      });
+  });
+}

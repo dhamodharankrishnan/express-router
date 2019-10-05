@@ -4,7 +4,11 @@ const tenantDBService = require('../database/TenantDBService');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Respond for Get Tenant Request....');
+  console.log('Before calling Get tenant request :'+ JSON.stringify(req.body));
+  //res.send('Respond for Get Tenant Request....');
+  tenantDBService.getTenant(res);
+  console.log('After calling Get tenant:');
+  
 });
 
 router.post('/', function (req, res) {
