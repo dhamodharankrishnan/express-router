@@ -27,6 +27,10 @@ router.put('/:tenantId', function (req, res) {
     res.send('Got a PUT tenant request at /tenant')
   })  
 router.delete('/:tenantId', function (req, res) {
-    res.send('Got a Delete tenant request at /tenant')
+    let tenantId = req.param('tenantId');
+    console.log('Delete Tenant :'+tenantId);
+    let deleteTenantRequest = {tenantId: tenantId};
+    tenantDBService.deleteTenant(deleteTenantRequest, res);
+    
   })  
 module.exports = router;

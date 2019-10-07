@@ -1,7 +1,10 @@
 var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
+
 var url = "mongodb://localhost:27017/";
 const ERROR_001 = {code:'GET_TENANT_ERROR', message:'Error gettting Tenant data'};
 const ERROR_002 = {code:'CREATE_TENANT_ERROR', message:'Error creating Tenant in database'};
+const ERROR_004 = {code:'DELETE_TENANT_ERROR', message: 'Error deleting Tenant in database'};
 
 
 /**
@@ -55,11 +58,34 @@ exports.getTenant = (responseCallback) => {
   });
 }
 
+exports.deleteTenant = ( deleteTenantRequest, responseCallback) => {
+    console.log('TenantDBService - deleteTenant');
+    MongoClient.connect(url, function(err, db) {
+    if (err) {
+        handleError(err, responseCallback, ERROR_004);
+    }else{
+        var dbo = db.db("tenantdb");
+        
+        var deleteQuery = {"_id": ObjectId(deleteTenantRequest.tenantId) };
+        dbo.collection("tenant").deleteOne(deleteQuery, function(err, result) {
+            if (err) {
+                handleError(err, responseCallback, ERROR_004);
+            }else {
+                responseCallback.status(204);
+                responseCallback.send();
+            }
+            db.close();
+            });
+    }
+  });
+}
+
 function handleError (exception, responseCallback, errorConstant) {
     let errorMessage = {
         "code" : errorConstant.code,
         "message" : errorConstant.message
     };
+    responseCallback.status(500);
     responseCallback.send(errorMessage);
     console.log(exception);
 
