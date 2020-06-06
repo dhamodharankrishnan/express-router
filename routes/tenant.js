@@ -11,6 +11,9 @@ router.get('/', function(req, res, next) {
   
 });
 
+/**
+ * Create Tenant
+ */
 router.post('/', function (req, res) {
     console.log('Post tenant request :'+ JSON.stringify(req.body));
     let tenantObject = req.body;
