@@ -6,20 +6,7 @@ const heroDBService = require('../database/HeroDBService');
 /* GET heroes listing. */
 router.get('/', function(req, res, next) {
     console.log('Before calling Get Heroes request :'+ JSON.stringify(req.body));
-    
-    const heroes = [
-        { id: 11, name: 'Dr APJ-Router' },
-        { id: 12, name: 'Narco-Router' },
-        { id: 13, name: 'Bombasto' },
-        { id: 14, name: 'Celeritas' },
-        { id: 15, name: 'Magneta' },
-        { id: 16, name: 'RubberMan' },
-        { id: 17, name: 'Dynama' },
-        { id: 18, name: 'Dr IQ' },
-        { id: 19, name: 'Magma' },
-        { id: 20, name: 'Tornado' }
-      ];
-      res.send( heroes );
+    heroDBService.getHeroes(res);
       console.log('After calling Get Heroes:');
       
   });

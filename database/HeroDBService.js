@@ -36,17 +36,17 @@ exports.saveHero = (heroObject) => {
 
 }
 
-exports.getHERO = (responseCallback) => {
+exports.getHeroes = (responseCallback) => {
 
     console.log('HERODBService - getHERO');
     MongoClient.connect(url, function(err, db) {
     if (err) {
         handleError(err, responseCallback, ERROR_001);
     }else{
-        var dbo = db.db("HEROdb");
+        var dbo = db.db("herodb");
         
         //dbo.collection(<TABLE_NAME>).insertOne ( Object )
-        dbo.collection("HERO").find({}).toArray(function(err, result) {
+        dbo.collection("hero").find({}).toArray(function(err, result) {
             if (err) {
                 handleError(err, responseCallback, ERROR_001);
             }else {
