@@ -50,6 +50,7 @@ exports.getHeroes = (responseCallback) => {
             if (err) {
                 handleError(err, responseCallback, ERROR_001);
             }else {
+                console.log('Heroes :',result);
                 responseCallback.send(result);
             }
             db.close();
@@ -58,16 +59,16 @@ exports.getHeroes = (responseCallback) => {
   });
 }
 
-exports.deleteHERO = ( deleteHERORequest, responseCallback) => {
+exports.deleteHero = ( deleteHERORequest, responseCallback) => {
     console.log('HERODBService - deleteHERO');
     MongoClient.connect(url, function(err, db) {
     if (err) {
         handleError(err, responseCallback, ERROR_004);
     }else{
-        var dbo = db.db("HEROdb");
-        
-        var deleteQuery = {"_id": ObjectId(deleteHERORequest.HEROId) };
-        dbo.collection("HERO").deleteOne(deleteQuery, function(err, result) {
+        var dbo = db.db("herodb");
+        console.log('Delete Hero Request :', deleteHERORequest);
+        var deleteQuery = {"name": deleteHERORequest.name };
+        dbo.collection("hero").deleteOne(deleteQuery, function(err, result) {
             if (err) {
                 handleError(err, responseCallback, ERROR_004);
             }else {

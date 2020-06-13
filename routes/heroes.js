@@ -23,6 +23,15 @@ router.post('/', function (req, res) {
     
     let {id:id, name:name} = req.body;
     res.send({"id":id, "name": name});
-  })
+  });
+
+  router.delete('/:name', function (req, res) {
+    let name = req.param('name');
+    console.log('Delete Hero :'+name);
+    let deleteHeroRequest = {name: name};
+    heroDBService.deleteHero(deleteHeroRequest, res);
+    
+  })  
+
 
   module.exports = router;  
