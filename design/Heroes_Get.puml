@@ -1,0 +1,39 @@
+@startuml
+autonumber
+title Get Tenant : Sequence Diagram  
+skinparam ParticipantBorderColor #66000000
+skinparam sequenceMessageAlign center
+skinparam sequenceGroupBorderColor #1e4f9e
+skinparam sequenceGroupBorderThickness 1
+
+skinparam note {
+ BorderColor #FFFF66
+}
+skinparam sequence {
+ LifeLineBorderColor #000000
+ TitleFontSize 24
+}
+hide footbox
+
+actor User
+participant "Typescript" as tenant_view <<(V,#F8F9F9) TenantComponent>> #DAE8FC
+participant "Service" as tenant_service<<(S,#FFFFFF) Tenant Service>> #D5E8D4
+participant "/tenant" as tenant_router <<(R,#F8F9F9)NodeJS Express ( Tenant Router)>> #C8A3FF
+participant "Node MongoDB Client" as tenant_dbservice <<(C,#FFFFFF) Tenant DB Client>> #EFDF1C
+participant "MongoDB" as tenant_objects <<(D,#FFFFEE) TenantDB>> #D5EAAA
+
+User -> tenant_view : getTenant 
+note left: Button Click Event
+
+note over tenant_view: getTenant
+tenant_view -> tenant_service : getTenant Service
+tenant_service -> tenant_router : GET /tenant
+tenant_router -> tenant_dbservice : getTenant 
+tenant_dbservice -> tenant_objects : find
+tenant_objects -> tenant_dbservice : '[{id:'123', name: 'Dhamo'}, \n {id:'234', name:'Savithri'}] '
+tenant_dbservice -> tenant_router : '[{id:'123', name: 'Dhamo'}, \n {id:'234', name:'Savithri'}] '
+tenant_router -> tenant_service : '[{id:'123', name: 'Dhamo'}, \n {id:'234', name:'Savithri'}] '
+tenant_service -> tenant_view : '[{id:'123', name: 'Dhamo'}, \n {id:'234', name:'Savithri'}] '
+tenant_view -> User : '[{id:'123', name: 'Dhamo'}, \n {id:'234', name:'Savithri'}] '
+
+@enduml
