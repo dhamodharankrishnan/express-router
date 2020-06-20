@@ -36,6 +36,41 @@ exports.saveHero = (heroObject) => {
 
 }
 
+/**
+ * HERODB Service - updateHERO method to update the existing HERO object in Mongo DB.
+ * @param {*} heroObject  - HERO Json from Express router.
+ */
+exports.updateHero = (heroObject, apiRequest, responseCallback) => {
+    
+        console.log('HERODBService - updateHero');
+        console.log(heroObject);
+        console.log('Put Hero API request :'+ JSON.stringify(apiRequest.body));
+        var apiRequestBody = apiRequest.body;
+        var updatedHeroData = { $set: {id: apiRequestBody.id, name: apiRequestBody.name, role: apiRequestBody.role }};
+        MongoClient.connect(url, function(err, db) {
+            if (err) {
+                handleError(err, responseCallback, ERROR_002);
+            }else{
+                var dbo = db.db("herodb");
+                //Query the record that has to be updated.
+                var queryRecordForUpdate = {name : heroObject.name};
+                console.log('updatedHeroData :',updatedHeroData);
+                //dbo.collection(<TABLE_NAME>).updateOne ( Object )
+                dbo.collection("hero").updateOne(queryRecordForUpdate, updatedHeroData, function(err, res) {
+                    if (err) {
+                        handleError(err, responseCallback, ERROR_002);
+                    }else{
+                        console.log("1 document updated");
+                        db.close();
+                        responseCallback.status(204);
+                        responseCallback.send();
+                    }
+                });
+            }
+        });
+    
+    }
+
 exports.getHeroes = (responseCallback) => {
 
     console.log('HERODBService - getHERO');

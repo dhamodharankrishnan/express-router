@@ -33,5 +33,11 @@ router.post('/', function (req, res) {
     
   })  
 
+  router.put('/:name', function (apiRequest, apiResponse) {
+    console.log('Put Hero request :'+ JSON.stringify(apiRequest.body));
+    let name = apiRequest.param('name');
+    let updateHeroRequest = {name: name};
+    heroDBService.updateHero(updateHeroRequest, apiRequest, apiResponse);
+  })  
 
   module.exports = router;  
